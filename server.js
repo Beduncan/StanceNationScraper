@@ -9,8 +9,8 @@ var app = express();
 // Use morgan logger for logging requests
 app.use(logger("dev"));
 //set up the express app to handle data parsing 
-app.use(bodyParser.urlencoded({ extended : false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended : true }));
+app.use(bodyParser.json("public"));
 //accessing the public folder for css
 app.use(express.static(process.cwd() + "/public"));
 
@@ -19,10 +19,11 @@ var exphbs = require("express-handlebars");
 
 app.engine("handlebars", exphbs({ defualtLatout: "main" }));
 app.set("view engine", "handlebars");
-//limk controller 
-var router = require("./controllers/controller.js");
-app.use('/', router);
+//link routes 
+require('./routes/apiRoutes.js')(app);
+require('./routes/htmlRoutes.js')(app);
 
+var MONGODB_URL = 
 mongoose.Promise = Promise;
 mongoose.connect("mongodb://localhost/StanceNation", {
   // useMongoClient: true
